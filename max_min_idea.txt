@@ -1,0 +1,3 @@
+#ideas for max min calculation:
+for three users a b c with value A, B, C.
+Each share A1, A2, A3.... C1, C2, C3
