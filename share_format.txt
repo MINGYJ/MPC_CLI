@@ -1,0 +1,13 @@
+Since we need to calculate different values (salary, gpa etc.) in different function (add, multiply, average, max, min)
+we need to distinguish different shares from different people so we need to format the name of shares
+for example like what we output in MPC lab in txt file
+we will have format below for shares
+[sender number]_[receiver number]_[type].txt
+for example party member P3 send share of salary to P2 will be in file
+3_2_salary.txt
+
+After we done the calculation, and received other's output which is ready to merge and get our result
+We will name them in format:
+[sender number]_[type]_[function].txt
+For example, party member P3 finish calculating sum of share of salary and the output P3 send will be in file
+3_salary_sum.txt
