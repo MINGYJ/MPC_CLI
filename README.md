@@ -4,7 +4,8 @@ Group project for Privacy class
 
 ## prepare to use:
 
-Install python parser library: pip install parse
+Install python library:
+
 
 ## working
 
