@@ -42,19 +42,20 @@ class mpc_pkg:
             change_name=parser_cmd.delete_or_add_user(curr_input)
             if change_name==None:
                 prRed("Invalid command, please enter DELETE hostname:port or ADD hostname:port")
-            elif change_name[1]!=None or change_name[1].hostname!=None and change_name[1].port!=None and change_name[1].port.isnumeric()==True:
-                if change_name[0]==1:
-                    self.delete_user(change_name[1])
-                elif change_name[0]==2:
-                    self.user_update([change_name[1].hostname,change_name[1].port])
-                    print("Added user",change_name[1].hostname,":",change_name[1].port)
-                print("Change Complete, Current party members:")
-                for user in self.user_list:
-                    prPurple(str(user[0])+" : "+str(user[1]))
-                prGreen("Keep editing or enter QUIT to finish.")
+            elif change_name[1]==None:
+                prRed("Invalid URL entered, please try again with format: hostname:port")
+            elif change_name[1].hostname!=None and change_name[1].port!=None and change_name[1].port.isnumeric()==True:
+                    if change_name[0]==1:
+                        self.delete_user(change_name[1])
+                    elif change_name[0]==2:
+                        self.user_update([change_name[1].hostname,change_name[1].port])
+                        print("Added user",change_name[1].hostname,":",change_name[1].port)
+                    print("Change Complete, Current party members:")
+                    for user in self.user_list:
+                        prPurple(str(user[0])+" : "+str(user[1]))
+                    prGreen("Keep editing or enter QUIT to finish.")
             else:
                 prRed("Invalid URL entered, please try again with format: hostname:port")
-
             curr_input=sys.stdin.readline()
 
     def delete_user(self,del_user):
@@ -67,6 +68,7 @@ class mpc_pkg:
                 return
         print("User not found, please try again.")
 
+
     def view_stats(self):
         print("Current statistics:")
         for data in self.stats:
@@ -77,14 +79,16 @@ class mpc_pkg:
             change_name=parser_cmd.delete_or_add_data(curr_input)
             if change_name==None:
                 prRed("Invalid command, please enter DELETE type-of-data or ADD type:value")
-            elif change_name[1]==None:
+            elif change_name[1]!=None:
                 if change_name[0]==1:
-                    self.delete_user(change_name[1])
+                    self.stats_delete(change_name[1])
                 elif change_name[0]==2:
                     self.stats_update(change_name[1])
                 print("Change Complete, Current stats data:")
-                for data in self.stats:
-                    prPurple(str(data[0])+" : "+str(data[1]))
+                for data in list(self.stats.items()):
+                    prPurple(str(data))
                 prGreen("Keep editing or enter QUIT to finish.")
             else:
                 prRed("Invalid data pair entered, please try again with format: type:value")
+            curr_input=sys.stdin.readline()
+        

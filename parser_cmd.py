@@ -57,6 +57,7 @@ class parser_cmd:
         if command[0:7]=="DELETE ":
             del_type=command[7:]
             del_type=del_type.lower()
+            del_type=del_type.split(":")[0]
             return [1,del_type]
         elif command[0:4]=="ADD ":
             add_type=command[4:]
