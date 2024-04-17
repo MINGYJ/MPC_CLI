@@ -20,6 +20,13 @@ class mpc_pkg:
         else:
             prYellow("Adding new type "+str(new_type)+" with value "+str(new_value))
             self.stats.update(new_stats)
+    
+    def stats_delete(self,del_stats):
+        if del_stats in self.stats:
+            del self.stats[del_stats]
+            prYellow("Deleted type "+del_stats)
+        else:
+            prRed("Type "+del_stats+" not found, please try again.")
 
     def user_update(self,new_user):
         new_user=[new_user[0],int(new_user[1])]
@@ -28,14 +35,14 @@ class mpc_pkg:
     def view_user(self):
         print("Current party members:")
         for user in self.user_list:
-            print(user[0],":",user[1])
+            prPurple(str(user[0])+" : "+str(user[1]))
         prGreen("If you want to delete users, enter DELETE hostname:port\nIf you want to add users, enter ADD hostname:port\nEnter QUIT to finish.")
         curr_input=sys.stdin.readline()
         while curr_input!="QUIT\n":
             change_name=parser_cmd.delete_or_add_user(curr_input)
             if change_name==None:
                 prRed("Invalid command, please enter DELETE hostname:port or ADD hostname:port")
-            elif change_name[1].hostname!=None and change_name[1].port!=None and change_name[1].port.isnumeric()==True:
+            elif change_name[1]!=None or change_name[1].hostname!=None and change_name[1].port!=None and change_name[1].port.isnumeric()==True:
                 if change_name[0]==1:
                     self.delete_user(change_name[1])
                 elif change_name[0]==2:
@@ -43,7 +50,8 @@ class mpc_pkg:
                     print("Added user",change_name[1].hostname,":",change_name[1].port)
                 print("Change Complete, Current party members:")
                 for user in self.user_list:
-                    print(user[0],":",user[1])
+                    prPurple(str(user[0])+" : "+str(user[1]))
+                prGreen("Keep editing or enter QUIT to finish.")
             else:
                 prRed("Invalid URL entered, please try again with format: hostname:port")
 
@@ -60,4 +68,23 @@ class mpc_pkg:
         print("User not found, please try again.")
 
     def view_stats(self):
-        return None
+        print("Current statistics:")
+        for data in self.stats:
+            prPurple(str(data)+" : "+str(self.stats[data]))
+        prGreen("If you want to delete data, enter DELETE type-of-data\nIf you want to add users, enter ADD type:value\nEnter QUIT to finish.")
+        curr_input=sys.stdin.readline()
+        while curr_input!="QUIT\n":
+            change_name=parser_cmd.delete_or_add_data(curr_input)
+            if change_name==None:
+                prRed("Invalid command, please enter DELETE type-of-data or ADD type:value")
+            elif change_name[1]==None:
+                if change_name[0]==1:
+                    self.delete_user(change_name[1])
+                elif change_name[0]==2:
+                    self.stats_update(change_name[1])
+                print("Change Complete, Current stats data:")
+                for data in self.stats:
+                    prPurple(str(data[0])+" : "+str(data[1]))
+                prGreen("Keep editing or enter QUIT to finish.")
+            else:
+                prRed("Invalid data pair entered, please try again with format: type:value")

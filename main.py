@@ -60,3 +60,5 @@ while curr_input!="CALC\n":
         Curr_user.view_user()
     elif curr_input=="DATA\n":
         Curr_user.view_stats()
+    prGreen("Enter USER to view and edit all party members hostname, \nEnter DATA to view and edit the statistics data you just input, \nEnter CALC to start computing stage.")
+    curr_input=sys.stdin.readline()

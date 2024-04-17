@@ -22,7 +22,7 @@ class parser_cmd:
     def stats_type(command):
         command=command.strip()
         parsed_stat=command.split(":")
-        if len(parsed_stat)!=2 or parser_cmd.is_float(parsed_stat[1])==False:
+        if len(parsed_stat)!=2 or is_float(parsed_stat[1])==False:
             #print("Invalid format, please enter in the format: type:value")
             return None
         else:
@@ -30,13 +30,7 @@ class parser_cmd:
             parsed_stat[1]=parsed_stat[1].strip()
             parsed_stat[1]=float(parsed_stat[1])
             return ({parsed_stat[0]:parsed_stat[1]})
-        
-    def is_float(string):
-        try:
-            float(string)
-            return True
-        except ValueError:
-            return False
+
         
     #return a list with [status code, hostname:port]
     #status code 1 is for delete, 2 is for add
@@ -45,13 +39,33 @@ class parser_cmd:
         if command[0:7]=="DELETE ":
             del_host=command[7:]
             del_host=parser_cmd.host_port(del_host)
+            #turn the string into host_port object
             return [1,del_host]
         elif command[0:4]=="ADD ":
             add_host=command[4:]
             add_host=parser_cmd.host_port(add_host)
             return [2,add_host]
         else:
-            prRed("Invalid command, please enter DELETE hostname:port or ADD hostname:port")
+            return None
+            #prRed("Invalid command, please enter DELETE hostname:port or ADD hostname:port")
+
+
+    #return a list with [status code, type/type:value]
+    #code 1 for delete, 2 for add, return None for invalid command
+    def delete_or_add_data(command):
+        command=command.strip()
+        if command[0:7]=="DELETE ":
+            del_type=command[7:]
+            del_type=del_type.lower()
+            return [1,del_type]
+        elif command[0:4]=="ADD ":
+            add_type=command[4:]
+            add_type=parser_cmd.stats_type(add_type)
+            #turn string into dictionary {type:value}
+            return [2,add_type]
+        else:
+            return None
+            
 
 
 #method to parse input hostname:port
@@ -77,6 +91,13 @@ def is_valid_hostname(hostname):
     allowed = re.compile("(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
     return all(allowed.match(x) for x in hostname.split("."))
 
+def is_float(string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
+
 class host_port:
     
     def __init__(self,hostname,port) -> None:
@@ -87,3 +108,4 @@ class host_port:
         return self.hostname
     def port(self):
         return self.port
+    
