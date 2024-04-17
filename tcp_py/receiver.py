@@ -1,0 +1,1 @@
+#class to receive other users' share/merge
