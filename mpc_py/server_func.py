@@ -1,7 +1,17 @@
-import shamirs
+#this is the class to compute Shamir's secret shares
+#currently finish add/mult
 
-age=20
-(a,b,c,d)=shamirs.shares(20,4)
-(q,w,e,r)=shamirs.shares(30,4)
-aa=shamirs.interpolate([a-b, b-c, c-d, d-a])
-print(aa)
+import os
+
+class server_func:
+
+    path='../share_received/'
+
+    def __init__(self):
+        pass
+
+    def add(self,range):
+        share_add=0
+        inDir = os.listdir(self.path)
+        for share_recv in inDir:
+            return
