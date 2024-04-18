@@ -4,6 +4,7 @@ import sys
 from parser_cmd import parser_cmd
 from color_output import *
 
+
 class mpc_pkg:
     def __init__(self, host, user_list, stats,share_list):
         self.host=host
@@ -91,4 +92,6 @@ class mpc_pkg:
             else:
                 prRed("Invalid data pair entered, please try again with format: type:value")
             curr_input=sys.stdin.readline()
+        
+    #def party_init(self):
         
