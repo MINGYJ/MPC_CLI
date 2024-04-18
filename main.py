@@ -16,8 +16,9 @@ def main():
         print("IP Address: ",gethostbyname(hostname))
     except:
         prRed("Unable to get Hostname and IP, try restarting the program.")
-
-    prGreen("Please start entering the other users hostname:port to start. Enter QUIT to finish entering users.")
+    prGreen("Welcome to the MPC program!\nPlease enter your username to start.")
+    #not sure will we use hostname or username since hostname may be duplicate (since it is decided by network)
+    prGreen("Please start entering the other users hostname:port(eg. priv@cs.unc.edu:777) to start. Enter QUIT to finish entering users.")
     Curr_user=mpc_pkg(hostname,[],{},[])
     url_input=sys.stdin.readline()
 
@@ -40,7 +41,7 @@ def main():
 
     #start entering statistics the user want to share in MPC
     print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nNow Entering the statistic data you want to share in MPC")
-    prGreen("Please enter the statistic type and value in the format: type:value\nEnter QUIT to finish entering statistics.")
+    prGreen("Please enter the statistic type and value in the format: type:value (eg. age:42)\nEnter QUIT to finish entering statistics.")
     curr_stat=sys.stdin.readline()
     while curr_stat!="QUIT\n":
         parsed_stat=parser_cmd.stats_type(curr_stat)
