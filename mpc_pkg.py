@@ -92,6 +92,51 @@ class mpc_pkg:
             else:
                 prRed("Invalid data pair entered, please try again with format: type:value")
             curr_input=sys.stdin.readline()
-        
+
+# Currently, these computations will not calculate the statistics across data from multiple users in MPC.
+# They use the stats from the locally stored stats dictionary of the instance.
+# Goal is to be able to aggregate the local computations across all instances which will be further implemented later.
+
+    '''def compute_sum(self):
+        summed_stats = {}
+        for stat_type, values in self.stats.items():
+            if isinstance(values, list) and all(isinstance(x, (int, float)) for x in values):
+                summed_stats[stat_type] = sum(values)
+            else:
+                prRed("Error calculating sum.")
+        print("Sum: ", summed_stats)
+        return summed_stats
+    
+    def compute_average(self):
+        summed_stats = self.compute_sum()
+        average_stats = {}
+        for stat_type, sum_value in summed_stats.items():
+            if stat_type in self.stats and isinstance(self.stats[stat_type], list) and len(self.stats[stat_type]) > 0:
+                 average_stats[stat_type] = sum_value / len(self.stats[stat_type])
+            else:
+                prRed("Error computing average.")
+        print("Average: ", average_stats)
+        return average_stats
+    
+    def compute_max(self):
+        max_stats = {}
+        for stat_type, values in self.stats.items():
+            if isinstance(values, list) and values:
+                max_stats[stat_type] = max(values)
+            else:
+                prRed("Error calculating max value.")
+        print("Max: ", max_stats)
+        return max_stats
+    
+    def compute_min(self):
+        min_stats = {}
+        for stat_type, values in self.stats.items():
+            if isinstance(values, list) and values:
+                min_stats[stat_type] = min(values)
+            else:
+                prRed("Error calculating minimum value.")
+        print("Minimum: ", min_stats)
+        return min_stats'''
+    
     #def party_init(self):
         

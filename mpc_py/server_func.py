@@ -14,4 +14,44 @@ class server_func:
         share_add=0
         inDir = os.listdir(self.path)
         for share_recv in inDir:
-            return
+            entire_path = os.path.join(self.path, share_recv)
+            with open(entire_path, 'r') as file:
+                for line in file:
+                    share_total += int(line.strip())
+            return share_add
+    
+    def average(self, range):
+        share_sum=0
+        count=0
+        inDir = os.listdir(self.path)
+        for share_recv in inDir:
+            entire_path = os.path.join(self.path, share_recv)
+            with open(entire_path, 'r') as file:
+                for line in file:
+                    share_sum += float(line.strip())
+                    count+=1
+            return share_sum/count
+        
+    def max(self, range):
+        max_value = None
+        inDir = os.listdir(self.path)
+        for share_recv in inDir:
+            entire_path = os.path.join(self.path, share_recv)
+            with open(entire_path, 'r') as file:
+                for line in file:
+                    max_share = float(line.strip())
+                    if max_value is max_share > max_value:
+                        max_value = max_share
+        return max_value
+
+    def min(self, range):
+        min_value = None
+        inDir = os.listdir(self.path)
+        for share_recv in inDir:
+            entire_path = os.path.join(self.path, share_recv)
+            with open(entire_path, 'r') as file:
+                for line in file:
+                    min_share = float(line.strip())
+                    if min_value is min_share < min_value:
+                        min_value = min_share
+        return min_value
