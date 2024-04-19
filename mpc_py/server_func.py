@@ -17,8 +17,8 @@ class server_func:
             entire_path = os.path.join(self.path, share_recv)
             with open(entire_path, 'r') as file:
                 for line in file:
-                    share_total += int(line.strip())
-            return share_add
+                    share_add += int(line.strip())
+        return share_add
     
     def average(self, range):
         share_sum=0
@@ -30,7 +30,7 @@ class server_func:
                 for line in file:
                     share_sum += float(line.strip())
                     count+=1
-            return share_sum/count
+        return share_sum/count
         
     def max(self, range):
         max_value = None
@@ -40,7 +40,7 @@ class server_func:
             with open(entire_path, 'r') as file:
                 for line in file:
                     max_share = float(line.strip())
-                    if max_value is max_share > max_value:
+                    if max_share > max_value or max_value is None:
                         max_value = max_share
         return max_value
 
@@ -52,6 +52,6 @@ class server_func:
             with open(entire_path, 'r') as file:
                 for line in file:
                     min_share = float(line.strip())
-                    if min_value is min_share < min_value:
+                    if min_share < min_value or min_value is None:
                         min_value = min_share
         return min_value
