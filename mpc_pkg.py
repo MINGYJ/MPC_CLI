@@ -24,7 +24,21 @@ class mpc_pkg:
         else:
             prYellow("Adding new type "+str(new_type)+" with value "+str(new_value))
             self.stats.update(new_stats)
-    
+
+
+    def states_update_send(self):
+        """
+        Send the uopdated statistics types to the server
+        """
+        type_list=[]
+        for stats in self.stats:
+            type_list.append(stats)
+        try:
+            ack=self.client.send_to_server(("STAT"+json.dumps(type_list)))
+            prCyan(ack)
+        except:
+            prRed("Error sending statistics to server, please try again.")
+
     def stats_delete(self,del_stats):
         if del_stats in self.stats:
             del self.stats[del_stats]
@@ -45,8 +59,21 @@ class mpc_pkg:
         except:
             prRed("Error connecting to server, please try again.")
 
+    def info_update(self):
+        try:
+            info=json.loads(self.client.send_to_server("INFO"))
+            prYellow("Server currently hold a party size of "+str(info[0]))
+            for stats in info[1]:
+                prYellow("We have "+str(int(info[1][stats]))+ " people want to compute their "+str(stats))
+        except:
+            prRed("Error connecting to server, please try again.")
+    
 
     def view_user(self):
+        """
+        This function is used by old MPC module and will not call in current version
+        Keep for future reference
+        """
         print("Current party members:")
         for user in self.user_list:
             prPurple(str(user[0])+" : "+str(user[1]))
@@ -73,6 +100,10 @@ class mpc_pkg:
             curr_input=sys.stdin.readline()
 
     def delete_user(self,del_user):
+        """
+        This function is used by old MPC module and will not call in current version
+        Keep for future reference
+        """
         del_user=del_user.hostname+":"+str(del_user.port)
         for user in self.user_list:
             check_user=user[0]+":"+str(user[1])
@@ -105,6 +136,7 @@ class mpc_pkg:
             else:
                 prRed("Invalid data pair entered, please try again with format: type:value")
             curr_input=sys.stdin.readline()
+        self.states_update_send()
 
 # Currently, these computations will not calculate the statistics across data from multiple users in MPC.
 # They use the stats from the locally stored stats dictionary of the instance.

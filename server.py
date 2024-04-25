@@ -52,6 +52,7 @@ def handle(client):
                 for stats in types:
                     if stats not in stats_types:
                         stats_types.append(stats)
+                client.send("ACK by Server".encode('ascii'))
             elif message[0:4]=='INFO':
                 info=[len(clients),get_info()]
                 info=json.dumps(info)
@@ -87,7 +88,9 @@ def receive():
 def get_info():
     info={}
     for stats in stats_types:
-        info[stats]=sum(x.count(stats) for x in clients_stats)
+        count=sum(x.count(stats) for x in clients_stats)
+        if count>0:
+            info[stats]=count
     return info
 
 

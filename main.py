@@ -28,14 +28,14 @@ def main():
     #while url_input!="QUIT\n":
     parsed_url=parser_cmd.host_port(url_input)
     if parsed_url==None or parsed_url.hostname==None or parsed_url.port.isnumeric()==False:
-        prRed("Invalid URL entered, please try again with format: hostname:port")
+        prRed("Invalid URL entered, please try again with format: hostname/IP:port")
     else:
         prYellow("You entered hostname:"+parsed_url.hostname+" and port:"+parsed_url.port)
         #use hostname:port so the real netloc become hostname, the port is in "port" section
         party_size+=1
         Curr_user.user_update([parsed_url.hostname,parsed_url.port])
  
-    print("Finish entering server.\nWe have",party_size,"users in the party.")
+    print("Finish entering server.")
 
 
     #start entering statistics the user want to share in MPC
@@ -52,15 +52,16 @@ def main():
             prGreen("Now enter the next statistic data. \nEnter QUIT to finish entering statistics.")
         curr_stat=sys.stdin.readline()
     print("Finish entering statistics.\nWe have",len(Curr_user.stats),"statistics to share in MPC.")
+    Curr_user.states_update_send()
 
     #now we can start calculating
     #will implement the TCP communication part in the next update
     print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    prGreen("All data prepared, \nenter USER to view and edit all party members hostname, \nenter DATA to view and edit the statistics data you just input, \nenter CALC to start computing stage.")
+    prGreen("All data prepared, \nenter USER to get the current participants info from server, \nenter DATA to view and edit the statistics data you just input, \nenter CALC to start computing stage.")
     curr_input=sys.stdin.readline()
     while curr_input!="CALC\n":
         if curr_input=="USER\n":
-            Curr_user.view_user()
+            Curr_user.info_update()
         elif curr_input=="DATA\n":
             Curr_user.view_stats()
         prGreen("Enter USER to view and edit all party members hostname, \nEnter DATA to view and edit the statistics data you just input, \nEnter CALC to start computing stage.")
