@@ -3,6 +3,8 @@
 import sys
 from parser_cmd import parser_cmd
 from color_output import *
+from client import client
+import json
 
 
 class mpc_pkg:
@@ -11,6 +13,7 @@ class mpc_pkg:
         self.user_list=user_list
         self.stats=stats
         self.share_list=share_list
+        self.client=client()
 
     def stats_update(self,new_stats):
         new_type=list(new_stats.keys())[0]
@@ -30,8 +33,18 @@ class mpc_pkg:
             prRed("Type "+del_stats+" not found, please try again.")
 
     def user_update(self,new_user):
-        new_user=[new_user[0],int(new_user[1])]
-        self.user_list.append(new_user)
+        try:
+            host=new_user[0]
+            port=int(new_user[1])
+            self.client.enter_server(host,port)
+            self.client.send_to_server("Hello from the client")
+            info=json.loads(self.client.send_to_server("INFO"))
+            prYellow("Server currently hold a party size of "+str(info[0]))
+            for stats in info[1]:
+                prYellow("We have "+str(int(info[1][stats]))+ " people want to compute their "+str(stats))
+        except:
+            prRed("Error connecting to server, please try again.")
+
 
     def view_user(self):
         print("Current party members:")
