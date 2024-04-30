@@ -67,11 +67,22 @@ def main():
         prGreen("Enter USER to view and edit all party members hostname, \nEnter DATA to view and edit the statistics data you just input, \nEnter CALC to start computing stage.")
         curr_input=sys.stdin.readline()
     print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    print("Start computing stage.\nWe have functions:[the mpc functions we have] to compute the statistics data.")
+    print("Start computing stage.\nWe have functions:[SUM,VAR(variance),MAX,MIN] to compute the statistics data.")
     #following part is the MPC part
     #first implement MPC functions/classes this update
     #we can use tls to encrypted the communication in next update
-
+    curr_input=None
+    while curr_input!="QUIT\n":
+        if curr_input=="SUM\n":
+            Curr_user.compute_sum()
+        elif curr_input=="VAR\n":
+            Curr_user.variance()
+        elif curr_input=="MAX\n":
+            Curr_user.max()
+        elif curr_input=="MIN\n":
+            Curr_user.min()
+        prGreen("Enter SUM to compute the sum of all statistics data, \nEnter VAR to compute the variance of all statistics data, \nEnter MAX to compute the max of all statistics data, \nEnter MIN to compute the min of all statistics data, \nEnter QUIT to finish.")
+        curr_input=sys.stdin.readline()
 
 
 

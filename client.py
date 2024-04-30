@@ -10,6 +10,8 @@ class client:
     def __init__(self):
         self.client = None
         self.stop_thread = False
+        self.receive_message = None
+        self.mpc_cmd=None
         # self.client_start()
 
     def enter_server(self,ip,port):
@@ -21,6 +23,8 @@ class client:
             # Connect to a host
             self.client.connect((ip, port))
             prCyan(self.client.recv(1024).decode('ascii'))
+            self.receive_thread = threading.Thread(target=self.receive)
+            self.receive_thread.start()
         except:
             print('Error Occured while Connecting, maybe info is wrong, try again')
             self.enter_server()
@@ -30,24 +34,29 @@ class client:
         while True:
             if self.stop_thread:
                 break
-            try:
-                message = self.client.recv(1024).decode('ascii')
-                # Clients those are banned can't reconnect
-                print(message)
-            except socket.error:
-                print('Error Occured while Connecting, maybe server is down')
-                self.client.close()
-                break
-
+            else:
+                try:
+                    message = self.client.recv(1024).decode('ascii')
+                    # Clients those are banned can't reconnect
+                    #prCyan("thread recv:"+message)
+                    self.receive_message = message
+                except socket.error:
+                    print('Error Occured while Connecting, maybe server is down')
+                    self.client.close()
+                    break
+        
 
     def send_to_server(self,message):
         try:
             self.clear_buffer()
             msg=message.encode('ascii')
             msg=msg.ljust(1024,b'\0')
-            #padding to make all msg have same length
+            #padding to make all msg have same length-same socket size
             self.client.send(msg)
-            recv=self.client.recv(1024).decode('ascii')
+            while self.receive_message == None: continue
+            recv=self.receive_message
+            self.receive_message = None
+            #print('Received:',recv)
             return recv
         except socket.error as e:
             print('Error Occured while Connecting, maybe server is down')

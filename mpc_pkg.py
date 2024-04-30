@@ -142,8 +142,11 @@ class mpc_pkg:
 # They use the stats from the locally stored stats dictionary of the instance.
 # Goal is to be able to aggregate the local computations across all instances which will be further implemented later.
 
-    '''def compute_sum(self):
+    def compute_sum(self):
         summed_stats = {}
+        prGreen("Calculating sum of statistics. Please input the statistics data type you want to compute(eg.age):")
+        stat_type = sys.stdin.readline().strip()
+        self.client.send_to_server("CALC SUM "+stat_type)
         for stat_type, values in self.stats.items():
             if isinstance(values, list) and all(isinstance(x, (int, float)) for x in values):
                 summed_stats[stat_type] = sum(values)
@@ -152,7 +155,8 @@ class mpc_pkg:
         print("Sum: ", summed_stats)
         return summed_stats
     
-    def compute_average(self):
+    '''
+        def compute_average(self):
         summed_stats = self.compute_sum()
         average_stats = {}
         for stat_type, sum_value in summed_stats.items():
