@@ -5,12 +5,13 @@ import threading
 import socket
 import json
 from color_output import *
+import pickle
 
 try:
     # Now this Host is the IP address of the Server, over which it is running.
     # I've user my localhost.
     host = socket.gethostbyname(socket.gethostname())
-    port = 5555  # Choose any random port which is not so common (like 80)
+    port = 7777  # Choose any random port which is not so common (like 80)
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # Bind the server to IP Address
@@ -29,12 +30,21 @@ except socket.error as e:
 
 
 
-# 1.Broadcasting Method
+# 1.MPC Calculation Broadcasting Method
+def calc_broadcast(command,stats,clients_list):
+    print(command,stats,clients_list)
+    for client in clients_list:
+        send_clients=clients_list
+        send_clients.remove(client)
+        send_clients=[x.getpeername() for x in send_clients]
+        message="CALC "+command+" "+stats+" "+json.dumps(send_clients)
+        client.send(message.encode('ascii'))
+
+# 2.Broadcasting Method
 def broadcast(message):
-    print(message.decode('ascii'))
+    print('Broadcasting:',message.decode('ascii'))
     for client in clients:
         client.send(message)
-
 
 
 def handle(client):
@@ -57,6 +67,17 @@ def handle(client):
                 info=[len(clients),get_info()]
                 info=json.dumps(info)
                 client.send(info.encode('ascii'))
+            elif message[0:4]=='CALC':
+                message=message.split()
+                if message[1]=='SUM':
+                    stats=message[2]
+                    client.send("ACK COMPUTATION".encode('ascii'))
+                    if stats in stats_types:
+                        broadcast_clients=get_type_client_list(stats)
+                        calc_broadcast("SUM",stats,broadcast_clients)
+                elif message[1]=='AVG':
+                    stats=message[2]
+
             else:
                 client.send("ACK".encode('ascii'))
         except socket.error:
@@ -85,6 +106,7 @@ def receive():
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
 
+        
 def get_info():
     info={}
     for stats in stats_types:
@@ -93,11 +115,23 @@ def get_info():
             info[stats]=count
     return info
 
+#return the clients have *type needed in their data
+def get_type_client_list(type):
+    client_list=[]
+    for i,stats in enumerate(clients_stats):
+        if type in stats:
+            client_list.append(clients[i])
+    return client_list
+
 
 # Calling the main method
 prRed('This is the trusted third party server, please make sure it does not engaged in computation.')
 prGreen('Party Server is Listening over the IP: '+str(host)+' and Port: '+str(port))
 receive()
+while True:
+    if clients!=None:
+        broadcast("CALC SUM age {1,2,3,4,5}".encode('ascii'))
+        print('Broadcasted')
 
 
 

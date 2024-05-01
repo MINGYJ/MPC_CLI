@@ -39,12 +39,23 @@ class client:
                     message = self.client.recv(1024).decode('ascii')
                     # Clients those are banned can't reconnect
                     #prCyan("thread recv:"+message)
-                    self.receive_message = message
+                    if self.calc_event(message):
+                        self.receive_message=None
+                    else:
+                        self.receive_message = message
                 except socket.error:
                     print('Error Occured while Connecting, maybe server is down')
                     self.client.close()
                     break
         
+
+    def calc_event(self,message):
+        if message[0:4]=="CALC":
+            prCyan("++++++++++++++\nReceived Calculcation Command\n++++++++++++++")
+            self.mpc_cmd=message
+            self.receive_message=None
+            return True
+                    
 
     def send_to_server(self,message):
         try:
@@ -84,6 +95,9 @@ class client:
             except BlockingIOError:
                 sock.setblocking(1)
                 return
+    
+    def get_socket(self):
+        return self.client
 
 # client=client()
 # print("Client Started")

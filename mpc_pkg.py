@@ -5,6 +5,9 @@ from parser_cmd import parser_cmd
 from color_output import *
 from client import client
 import json
+import threading
+from mpc_py.connect_to_peer import connect_to_peer
+from mpc_py.file_solve import *
 
 
 class mpc_pkg:
@@ -56,6 +59,8 @@ class mpc_pkg:
             prYellow("Server currently hold a party size of "+str(info[0]))
             for stats in info[1]:
                 prYellow("We have "+str(int(info[1][stats]))+ " people want to compute their "+str(stats))
+            command_thread = threading.Thread(target=self.calc_listener)
+            command_thread.start()
         except:
             prRed("Error connecting to server, please try again.")
 
@@ -146,14 +151,9 @@ class mpc_pkg:
         summed_stats = {}
         prGreen("Calculating sum of statistics. Please input the statistics data type you want to compute(eg.age):")
         stat_type = sys.stdin.readline().strip()
-        self.client.send_to_server("CALC SUM "+stat_type)
-        for stat_type, values in self.stats.items():
-            if isinstance(values, list) and all(isinstance(x, (int, float)) for x in values):
-                summed_stats[stat_type] = sum(values)
-            else:
-                prRed("Error calculating sum.")
-        print("Sum: ", summed_stats)
-        return summed_stats
+        recv=self.client.send_to_server("CALC SUM "+stat_type)
+        prCyan(recv)
+        
     
     '''
         def compute_average(self):
@@ -189,3 +189,15 @@ class mpc_pkg:
     
     #def party_init(self):
         
+
+    def calc_listener(self):
+    #this function will start a new thread and listen to the command from the server
+        while True:
+            if self.client.mpc_cmd!=None:
+                mpc_command=self.client.mpc_cmd.split()
+                print("command:",mpc_command)
+                self.client.mpc_cmd=None
+                mpc_command[3]=json.loads(mpc_command[3])
+                if mpc_command[1]=="SUM":
+                    new_mpc=connect_to_peer(mpc_command,self.stats[mpc_command[2]],self.client.get_socket())
+                    compute_sum(self.stats[mpc_command[2]],len(mpc_command[3]))

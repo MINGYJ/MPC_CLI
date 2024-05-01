@@ -27,13 +27,17 @@ def main():
     #maybe implement a file import method in the future
     #while url_input!="QUIT\n":
     parsed_url=parser_cmd.host_port(url_input)
-    if parsed_url==None or parsed_url.hostname==None or parsed_url.port.isnumeric()==False:
-        prRed("Invalid URL entered, please try again with format: hostname/IP:port")
-    else:
-        prYellow("You entered hostname:"+parsed_url.hostname+" and port:"+parsed_url.port)
-        #use hostname:port so the real netloc become hostname, the port is in "port" section
-        party_size+=1
-        Curr_user.user_update([parsed_url.hostname,parsed_url.port])
+    while True:
+        if parsed_url==None or parsed_url.hostname==None or parsed_url.port.isnumeric()==False:
+            prRed("Invalid URL entered, please try again with format: hostname/IP:port")
+            url_input=sys.stdin.readline()
+            parsed_url=parser_cmd.host_port(url_input)
+        else:
+            prYellow("You entered hostname:"+parsed_url.hostname+" and port:"+parsed_url.port)
+            #use hostname:port so the real netloc become hostname, the port is in "port" section
+            party_size+=1
+            Curr_user.user_update([parsed_url.hostname,parsed_url.port])
+            break
  
     print("Finish entering server.")
 
