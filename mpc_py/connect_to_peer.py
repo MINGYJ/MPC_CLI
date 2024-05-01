@@ -6,6 +6,8 @@ This class will use the file generate by file_solve.py
 import socket
 import threading
 from ..color_output import *
+import os
+import glob
 
 class connect_to_peer:
 
@@ -57,5 +59,9 @@ class connect_to_peer:
         for peer in peer_lists:
             send_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             send_client.connect((peer[0], peer[1]))
+            file_name="./share_to_send/"+str(self.command[1])+"_"+str(self.command[2])+"*.txt"
             #since the peer receiving side is handle by multi-thread, sending can be a single thread to reduce resource usage
+            f=open(glob.glob(file_name)[0])
+            print("**Current Sending files",glob.glob(file_name))
             
+
