@@ -1,3 +1,5 @@
 # Share received
 
-This folder contain the share received from other parties.
+Folder Information:
+1. Contains shares received from other party members.
+
