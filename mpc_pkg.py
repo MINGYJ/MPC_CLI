@@ -194,7 +194,8 @@ class mpc_pkg:
     #this function will start a new thread and listen to the command from the server
         while True:
             if self.client.mpc_cmd!=None:
-                mpc_command=self.client.mpc_cmd.split()
+                mpc_command=self.client.mpc_cmd.split(None,3)
+                #command always have four part: CALC+SUM/AVG/MAX...+state type+data(maybe only client list or client list+beaver triple)
                 print("command:",mpc_command)
                 self.client.mpc_cmd=None
                 mpc_command[3]=json.loads(mpc_command[3])

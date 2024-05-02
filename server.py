@@ -34,7 +34,7 @@ except socket.error as e:
 def calc_broadcast(command,stats,clients_list):
     print(command,stats,clients_list)
     for client in clients_list:
-        send_clients=clients_list
+        send_clients=clients_list.copy()
         send_clients.remove(client)
         send_clients=[x.getpeername() for x in send_clients]
         message="CALC "+command+" "+stats+" "+json.dumps(send_clients)
