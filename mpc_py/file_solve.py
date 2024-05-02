@@ -1,9 +1,15 @@
 """
-This module contains the function as a bridge between files from three folder and the other three MPC programs: merge , server_func and share
-This function will call the function from share to get the share of a value
-After communication complete, it will call the function from server_func to compute the value
-Finally, it will call the function from merge to merge the result from all three servers
-the method in merge, server_func and share only need to deal with *number*, not files
+This module contains functions that are in charge of:
+1. Integrating the three MPC programs: merge, serve_func, and share.
+2. Handling and bridging files from three different folders.
+3. Initiliazing computations needed for our statistical results. 
+
+Streamline:
+1. Function calls 'share' to retrieve the share of a value.
+2. Call a function from 'server_func' to compute the specified statistic.
+3. Call the function from 'merge' to merge the results of all three servers.
+
+Note: The methods in the three MPC programs only need to deal with numbers, not files.
 
 """
 

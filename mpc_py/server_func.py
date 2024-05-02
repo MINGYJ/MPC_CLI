@@ -1,5 +1,8 @@
-#this is the class to compute Shamir's secret shares
-#currently finish add/mult
+"""
+This module contains functions that are in charge of:
+1. Calculating statistical data for the inputs retrieved.
+2. Current functions: Add, Average, Max, and Minimum.
+"""
 
 import os
 

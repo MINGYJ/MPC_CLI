@@ -1,6 +1,9 @@
-#the function takes input, input data type
-#output the share file into the share_to_send folder
-#the name of the file is the share_format.txt
+""" 
+This module contains functions that are in charge of:
+1. Retrieving the input and it's data type.
+2. Outputting the share file into the share_to_send folder.
+3. Naming the file ("share_format.txt).
+"""
 
 import os
 import shamirs
