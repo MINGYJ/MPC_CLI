@@ -12,19 +12,33 @@ class merge:
         self.personal_shares = personal_shares
         self.received_shares = received_shares
         
-
+    # Retrieve personal data from 'share_to_send', retrieve party data from 'share_received'
     def merge_data(self):
         party_data = []
-        #retrieve personal data from 'share_to_send'
-        #retrieve party data from 'share_received'
+        # Merge personal shares and received shares logic here
+        for personal_share_file, received_share_file in zip(os.listdir(self.personal_shares), os.listdir(self.received_shares)):
+            personal_share_path = os.path.join(self.personal_shares, personal_share_file)
+            received_share_path = os.path.join(self.received_shares, received_share_file)
+            if os.path.isfile(personal_share_path) and os.path.isfile(received_share_path):
+                with open(personal_share_path, 'r') as personal_file, open(received_share_path, 'r') as received_file:
+                    personal_share = int(personal_file.read().strip())
+                    received_share = int(received_file.read().strip())
+                    # Assuming merging logic involves summing the shares
+                    merged_share = personal_share + received_share
+                    party_data.append(merged_share)
         return party_data
-    
+
+    #Iterate over the files and retrieve the numerical data.
     def read_data(self, directory):
         merged_data = []
-        #Iterate over the files and retrieve the numerical data.
-        return merged_data
-    
-    
-
-
+        for filename in os.listdir(directory):
+            filepath = os.path.join(directory, filename)
+            if os.path.isfile(filepath):
+                with open(filepath, 'r') as file:
+                    # Read numerical data from file and append to merged_data
+                    data = file.read().strip()
+                    # Assuming data is a single numerical value per file
+                    if data.isdigit():
+                        merged_data.append(int(data))
+        return merged_data    
     

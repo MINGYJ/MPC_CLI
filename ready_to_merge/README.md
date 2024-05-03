@@ -1,4 +1,4 @@
-# Read To Merge
+# Ready To Merge
 
 Folder Information:
 1. Contains files used for the final statistical output of our MPC program.
