@@ -1,18 +1,3 @@
-"""
-This module contains functions that are in charge of:
-1. Integrating the three MPC programs: merge, serve_func, and share.
-2. Handling and bridging files from three different folders.
-3. Initiliazing computations needed for our statistical results. 
-
-Streamline:
-1. Function calls 'share' to retrieve the share of a value.
-2. Call a function from 'server_func' to compute the specified statistic.
-3. Call the function from 'merge' to merge the results of all three servers.
-
-Note: The methods in the three MPC programs only need to deal with numbers, not files.
-
-
-"""
 import os
 from server_func import server_func
 from merge import merge

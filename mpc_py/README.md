@@ -1,19 +1,88 @@
-# structure of MPC folder
+# MPC Folder Structure
 
-We will have a seperate file to deal with the communication between merge, server func and share\
-These three class only need to work on **number**, not files\
-Currently, we need sum(value[]), mult(A,y,B,a,c) for Server_func\
-We need share(value,party_size) beaver_triple(party_size)for share\
-We need merge(value[]) for merge\
+## General Information
 
+1. Three key MPC classes: merge, server_func, and share.
+2. file_solve.py is responsible for bridging these three classes.
+3. Our MPC classes only work with **numbers**, not files.
 
-## add
+## connect_to_peer.py
 
-Use ADD as example, if user input age:20 and we have party size of three, then call share function: share(value,party_size) to get a list of three shares of 20\
-Then after each party send their share, the server_func will compute the sum of all shares from other parties, parameter(value[]), and return the result\
-Then the merge will calculate the final result from each users' result from their server_func, with paramter(value[])\
+**This class is in charge of:**
+1. Connecting and listening to peers.
+2. Sending shares to peers.
+3. Receiving shares from peers.
 
-## multiply
+**Example, for a case where there are 3 people in a party:**
+1. The server will open 4 threads.
+2. 2 threads are for listening to the other two.
+3. 2 threads are for sending to the other 2.
+
+**Function Specifications:**
+1. Init: Retrieve client information (address, IP), keeps track of connected clients, starts the send and receive methods.
+2. Receive: Allows acception of incoming connections, keeps track of current clients, and starts new communication threads.
+3. Handle: Receives client data, and writes data. 
+4. Send: Send file(s) and it's content to selected peer.
+5. Send Merge: Send merged files to all peers for final result.
+6. Receive Merge: Receive merged files from all peers for other class to read and compute final result
+
+## file_solve.py
+
+**This module contains functions that are in charge of:**
+1. Integrating the three MPC programs: merge, serve_func, and share.
+2. Handling and bridging files from three different folders.
+3. Initiliazing computations needed for our statistical results. 
+
+**Streamline:**
+1. Function calls 'share' to retrieve the share of a value.
+2. Call a function from 'server_func' to compute the specified statistic.
+3. Call the function from 'merge' to merge the results of all three servers.
+
+## merge.py
+
+**This module contains functions that are in charge of:**
+1. Retrieving the relevant computed results of all parties.
+2. Merging the computed results to produce a statistical output that includes the values of all parties.
+
+## server_func.py
+
+**This module contains functions that are in charge of:**
+1. Calculating statistical data (add, average, max, and min).
+2. Sending a party member's result to the 'share_to_send' folder.
+
+Note: Can be used for individual party member calculations, but also reused for parties calculations.
+
+## share.py
+
+TODO
+
+server_func TODO:
+- sum(value[])
+- mult(A,y,B,a,c)
+
+share TODO:
+- share(value,party_size)
+
+- beaver_triple(party_size)
+
+merge TODO:
+- merge(value[])
+
+# Additional Information
+
+## ADD example
+
+1. User input: 'age:20', Party size: 3
+2. Share function **'share(value,party_size)'** will retrieve three shares of 20.
+3. After each party sends their share 'server_func' will compute the sum of all shares from other parties, **'parameter(value[])'**, and return the result.
+4. 'merge' will then calculate the final result from each user's result from their server_func, **'parameter(value[])'**.
+
+## MULT example
+
+Note: We use Beaver Triples for MULT.
+
+1. 
+
 For MULT, we use Beaver Triple, for example input P1_age:20 and P2_age:21 and we have party size of three\
 The user will be ranked by their hostname and port, assume P1, P2, P3 in this case,P1 would be x and P2 would be y\
 First P1 and P2 will send their share to the party, use share(20,3) and share(21,3) to get three share of 20 and 21\

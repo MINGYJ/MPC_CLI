@@ -1,11 +1,3 @@
-"""
-This module contains functions that are in charge of:
-1. Calculating statistical data (add, average, max, and min).
-2. Sending a party member's result to the 'share_to_send' folder.
-
-Note: Can be used for individual party member calculations, but also reused for parties calculations.
-"""
-
 import os
 
 class server_func:

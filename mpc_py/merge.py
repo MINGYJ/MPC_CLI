@@ -1,8 +1,4 @@
 """
-This module contains functions that are in charge of:
-1. Retrieving the relevant computed results of all parties.
-2. Merging the computed results to produce a statistical output that includes the values of all parties.
-
 Thought/Question for Group Meeting: 
 
 For each party member are we retrieving files from both 'share_to_send' and 'share_received'? 
