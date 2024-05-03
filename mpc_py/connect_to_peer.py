@@ -11,19 +11,28 @@ class connect_to_peer:
         self.command=command
         client.information=client.getsockname()
         self.host = client[0]
+        #port is the share port, we use port+1 to avoid conflict
         self.port = client[1]+1
-
+        #merge port is the port to send the merged data to, we use port+2 to avoid conflict
+        self.merge_port = client[1]+2
         # Create the TCP socket and begin listening for incoming connections
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.bind((self.host, self.port))
         self.server.listen()
         print("Peer Server is listening on",self.host,":",self.port)
 
+        self.merge_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.merge_server.bind((self.host, self.merge_port))
+        self.merge_server.listen()
+        print("Peer Merge Server is listening on",self.host,":",self.merge_port)
+
         #Keeps track of the current client list.
         self.client_list=[]
 
         #start sending and receving at same time to reduce runtime
-        threading.Thread(target=self.send).start()
+        #threading.Thread(target=self.send).start()
+        #the main method will call send when needed
+        
         self.receive()
 
     def receive(self):
@@ -80,6 +89,33 @@ class connect_to_peer:
 
     def send_merge(self):
         return None
+    
+
+    def receive(self):
+        while True:
+            try:
+                #Ability to accept connections.
+                client, address = self.merge_server.accept()
+                print(f"Connected to {str(address)}")
+
+                threading.Thread(target=self.merge_handle, args=(client,)).start()
+            except Exception as e:
+                print("Error receiving connection: ", e)
+
+
+    def merge_handle(self,client):
+        try: 
+            calc, stats = self.command[1], self.command[2]
+            file_name="merge_"+str(calc)+"_"+str(stats)+"_"+len(self.client_list)+".txt"
+            with open('../ready_to_merge/'+file_name,'w+') as f:
+                while (l):
+                    l = client.recv(1024)
+                    f.write(l.decode('ascii'))
+            prCyan("Done receiving merge file.")
+        except Exception as e:
+            print("Error in handling client data:", e)
+        finally:
+            client.close()
 
 
                 
