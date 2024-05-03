@@ -204,3 +204,18 @@ class mpc_pkg:
                     new_mpc=connect_to_peer(mpc_command,self.client.get_socket())
                     new_mpc.break_thread=True
                     print("Start computing sum of "+mpc_command[2]+" data\n")
+                if mpc_command[1]=="AVG":
+                        compute_average(self.stats[mpc_command[2]],len(mpc_command[3]),self.stats[mpc_command[2]])
+                        new_mpc=connect_to_peer(mpc_command,self.client.get_socket())
+                        new_mpc.break_thread=True
+                        print("Start computing sum of "+mpc_command[2]+" data\n")
+                if mpc_command[1]=="MAX":
+                        compute_max(self.stats[mpc_command[2]],len(mpc_command[3]),self.stats[mpc_command[2]])
+                        new_mpc=connect_to_peer(mpc_command,self.client.get_socket())
+                        new_mpc.break_thread=True
+                        print("Start computing sum of "+mpc_command[2]+" data\n")
+                if mpc_command[1]=="MIN":
+                        compute_min(self.stats[mpc_command[2]],len(mpc_command[3]),self.stats[mpc_command[2]])
+                        new_mpc=connect_to_peer(mpc_command,self.client.get_socket())
+                        new_mpc.break_thread=True
+                        print("Start computing sum of "+mpc_command[2]+" data\n")
