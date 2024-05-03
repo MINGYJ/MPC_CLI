@@ -6,7 +6,7 @@ we will have format below for shares
 for example party member P3 send share of salary to P2 will be in file
 3_2_salary.txt
 
-After we done the calculation, and received other's output which is ready to merge and get our result
+After we have done the calculation, and received others' output which is ready to merge and get our result
 We will name them in format:
 [sender number]_[type]_[function].txt
 For example, party member P3 finish calculating sum of share of salary and the output P3 send will be in file

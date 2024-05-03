@@ -12,8 +12,10 @@ class merge:
         self.personal_shares = personal_shares
         self.received_shares = received_shares
         
-    # Retrieve personal data from 'share_to_send', retrieve party data from 'share_received'
     def merge_data(self):
+        """
+        Retrieve personal data from 'share_to_send' and retrieve party data from 'share_received'
+        """
         party_data = []
         # Merge personal shares and received shares logic here
         for personal_share_file, received_share_file in zip(os.listdir(self.personal_shares), os.listdir(self.received_shares)):
@@ -23,13 +25,16 @@ class merge:
                 with open(personal_share_path, 'r') as personal_file, open(received_share_path, 'r') as received_file:
                     personal_share = int(personal_file.read().strip())
                     received_share = int(received_file.read().strip())
-                    # Assuming merging logic involves summing the shares
+                    
+                    # Merge shares
                     merged_share = personal_share + received_share
                     party_data.append(merged_share)
         return party_data
 
-    #Iterate over the files and retrieve the numerical data.
     def read_data(self, directory):
+        """
+        Iterate over files to retrieve the numerical data
+        """
         merged_data = []
         for filename in os.listdir(directory):
             filepath = os.path.join(directory, filename)

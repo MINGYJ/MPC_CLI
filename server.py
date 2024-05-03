@@ -1,5 +1,5 @@
-## this is used to create a party list and make sure each memeber know others
-##get part of code ideas (broadcast) from https://github.com/IamLucif3r/Chat-On with MIT License
+## This is used to create a party list and make sure each memeber know others
+## Broadcasting inspired by https://github.com/IamLucif3r/Chat-On with MIT License
 
 import threading
 import socket
@@ -20,9 +20,9 @@ try:
     server.listen()
     # List to contain the Clients getting connected
     clients = []
-    #2d array to store the clients and their static 
+    # 2d array to store the clients and their static 
     clients_stats=[]
-    #set to store all statistic types (age, salary etc)
+    # Set to store all statistic types (age, salary etc)
     stats_types=[]
 except socket.error as e:
     print(str(e))
@@ -99,10 +99,10 @@ def receive():
         print('Connected to the',client)
         # Ask the clients for Nicknames
         client.send(('HELLO FROM '+str(host)).encode('ascii'))
-        #add client to list
+        # Add client to list
         clients.append(client)
         clients_stats.append([])
-        # Handling Multiple Clients Simultaneously
+        # Handling multiple clients simultaneously
         thread = threading.Thread(target=handle, args=(client,))
         thread.start()
 
@@ -115,7 +115,7 @@ def get_info():
             info[stats]=count
     return info
 
-#return the clients have *type needed in their data
+# Return the clients type needed in their data
 def get_type_client_list(type):
     client_list=[]
     for i,stats in enumerate(clients_stats):

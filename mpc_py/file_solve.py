@@ -83,22 +83,3 @@ def compute_min(command, party_size, stats):
         json.dump(min_data, receive_file)
 
     return min_result
-
-"""
-Currently, to compute ALL the functions, however I believe our goal is to let the user calculate the statistic of their choosing.
-
-def party_computation(self, party_data):
-        #Run the numerical data through server_func to calculate.
-        return {
-            'sum': server_func.add(party_data),
-            'average': server_func.average(party_data),
-            'max': server_func.max(party_data),
-            'min': server_func.min(party_data)
-        }
-    
-def final_result(self):
-        final_output = self.all_data()
-        results = self.computation(final_output)
-        print("Party Computation Results: ", results)
-
-        """

@@ -9,9 +9,12 @@ class parser_cmd:
         self.code=0
         pass
     
-    #return parsed url with hostname and port
-    #hostname = parsed_url.hostname, 
     def host_port(command):
+        """
+        Return parsed url with hostname and port.
+        Hostname = parsed_url.hostname.
+        """
+
         parsed_url=urlparse(command)
         if(parsed_url==None):
             #print("No hostname found, please enter a valid URL with hostname and port")
@@ -31,15 +34,17 @@ class parser_cmd:
             parsed_stat[1]=float(parsed_stat[1])
             return ({parsed_stat[0]:parsed_stat[1]})
 
-        
-    #return a list with [status code, hostname:port]
-    #status code 1 is for delete, 2 is for add
     def delete_or_add_user(command):
+        """
+        Return a list with [status code, hostname:port].
+        Status code 1 is for delete, 2 is for add.
+        """
+
         command=command.strip()
         if command[0:7]=="DELETE ":
             del_host=command[7:]
             del_host=parser_cmd.host_port(del_host)
-            #turn the string into host_port object
+            # Turn the string into host_port object
             return [1,del_host]
         elif command[0:4]=="ADD ":
             add_host=command[4:]
@@ -49,10 +54,12 @@ class parser_cmd:
             return None
             #prRed("Invalid command, please enter DELETE hostname:port or ADD hostname:port")
 
-
-    #return a list with [status code, type/type:value]
-    #code 1 for delete, 2 for add, return None for invalid command
     def delete_or_add_data(command):
+        """
+        Return a list with [status code, type/type:value].
+        Code 1 is for delete, 2 is for add, return None for invalid command.
+        """
+
         command=command.strip()
         if command[0:7]=="DELETE ":
             del_type=command[7:]
@@ -67,10 +74,10 @@ class parser_cmd:
         else:
             return None
             
-
-
-#method to parse input hostname:port
 def urlparse(command):
+    """
+    Parses input hostname:port.
+    """
     command=command.strip()
     cmd_list=command.split(":")
     #print(len(cmd_list))
@@ -83,8 +90,10 @@ def urlparse(command):
         cmd_list[1]=cmd_list[1].strip()
         return host_port(cmd_list[0],cmd_list[1])
 
-#method to check if the hostname is valid
 def is_valid_hostname(hostname):
+    """
+    Checks if hostname is valid.
+    """
     if len(hostname) > 255:
         return False
     if hostname[-1] == ".":

@@ -7,15 +7,15 @@ import glob
 class connect_to_peer:
 
     def __init__(self,command,client) -> None:
-        #Breaks the thread if needed
+        # Breaks the thread if needed
         self.break_thread=False
-        #Retrieves local client information
+        # Retrieves local client information
         self.command=command
         client=client.getsockname()
         self.host = client[0]
-        #port is the share port, we use port+1 to avoid conflict
+        # Port is the share port, we use port+1 to avoid conflict
         self.port = client[1]+1
-        #merge port is the port to send the merged data to, we use port+2 to avoid conflict
+        # Merge port is the port to send the merged data to, we use port+2 to avoid conflict
         self.merge_port = client[1]+2
         # Create the TCP socket and begin listening for incoming connections
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,12 +28,11 @@ class connect_to_peer:
         self.merge_server.listen()
         print("Peer Merge Server is listening on",self.host,":",self.merge_port)
 
-        #Keeps track of the current client list.
+        # Keeps track of the current client list.
         self.client_list=[]
 
-        #start sending and receving at same time to reduce runtime
-        #threading.Thread(target=self.send).start()
-        #the main method will call send when needed
+        # Start sending and receving at same time to reduce runtime
+        # The main method will call send when needed
 
         threading.Thread(target=self.receive).start()
         threading.Thread(target=self.merge_receive).start()
@@ -46,11 +45,11 @@ class connect_to_peer:
                 print("Breaking thread")
                 break
             try:
-                #Ability to accept connections.
+                # Ability to accept connections.
                 client, address = self.server.accept()
                 print(f"Connected to {str(address)}")
 
-                #Add to list of active clients and starts a new thread.
+                # Add to list of active clients and starts a new thread.
                 self.client_list.append(client)
                 threading.Thread(target=self.handle, args=(client,)).start()
             except Exception as e:
@@ -79,10 +78,12 @@ class connect_to_peer:
             try:
                 if merge:
                     peer[1]=peer[1]+1
-                    #merge port is the share port plus 1, server port plus 2
+                    # Merge port is the share port plus 1, server port plus 2
 
                 send_client.connect((peer[0], peer[1]))
-                #Maybe a print statement here for peer connection clarification
+                # Print statement for peer connection clarification
+                print(f"Connected to peer {peer[0]} on port {peer[1]}")
+                
                 file_name = "./share_to_send/" + str(self.command[1]) + "_" + str(self.command[2]) + "*.txt"
                 file_to_send = glob.glob(file_name)
                 if file_to_send:
@@ -107,7 +108,7 @@ class connect_to_peer:
             if self.break_thread==True:
                 break
             try:
-                #Ability to accept connections.
+                # Ability to accept connections
                 client, address = self.merge_server.accept()
                 print(f"Connected to {str(address)}")
 

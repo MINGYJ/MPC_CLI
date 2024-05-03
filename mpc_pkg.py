@@ -1,5 +1,5 @@
-#this is the class to contain all information will be sent to other useres in MPC
-#stats is a dictionary with statistics type: value
+# This is the class contains all information that will be sent to other useres in MPC.
+# Stats is a dictionary with statistics type: value
 import sys
 from parser_cmd import parser_cmd
 from color_output import *
@@ -31,7 +31,7 @@ class mpc_pkg:
 
     def states_update_send(self):
         """
-        Send the uopdated statistics types to the server
+        Send the updated statistics types to the server
         """
         type_list=[]
         for stats in self.stats:

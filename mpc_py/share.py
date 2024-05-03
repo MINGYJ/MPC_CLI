@@ -26,8 +26,6 @@ def shares(input, type, num_shares, output):
         output: Folder path to save the share file.
     """
 
-
-
     shares = SecretSharer.split_secret(str(input), num_shares)
 
     # Save shares to file
