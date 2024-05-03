@@ -28,12 +28,17 @@ def shares(input, type, num_shares, output):
 
     shares = SecretSharer.split_secret(str(input), num_shares)
 
-    # Save shares to file
-    file_name = os.path.join(output, 'share_format.txt')
+    share_inst = share()
+    share_inst.share_data = input
+    share_inst.share_type = type
+    share_inst.party_size = num_shares
 
-    with open(file_name, 'w') as f:
+    file_name = f"share_{type}.txt"
+    file_path = os.path.join(output, file_name)
+
+    with open(file_path, 'w') as f:
         f.write(f"Share Type: {type}\n")
         for share_index, share_value in shares:
             f.write(f"Share Index: {share_index}, Share Value: {share_value}\n")
 
-    print(f"Shares saved to {file_name}")
+    print(f"Shares saved to {file_path}")
