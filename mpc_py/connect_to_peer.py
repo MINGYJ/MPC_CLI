@@ -7,9 +7,11 @@ import glob
 class connect_to_peer:
 
     def __init__(self,command,client) -> None:
+        #Breaks the thread if needed
+        self.break_thread=False
         #Retrieves local client information
         self.command=command
-        client.information=client.getsockname()
+        client=client.getsockname()
         self.host = client[0]
         #port is the share port, we use port+1 to avoid conflict
         self.port = client[1]+1
@@ -33,10 +35,16 @@ class connect_to_peer:
         #threading.Thread(target=self.send).start()
         #the main method will call send when needed
 
-        self.receive()
+        threading.Thread(target=self.receive).start()
+        threading.Thread(target=self.merge_receive).start()
+
+
 
     def receive(self):
         while True:
+            if self.break_thread==True:
+                print("Breaking thread")
+                break
             try:
                 #Ability to accept connections.
                 client, address = self.server.accept()
@@ -72,7 +80,7 @@ class connect_to_peer:
                 if merge:
                     peer[1]=peer[1]+1
                     #merge port is the share port plus 1, server port plus 2
-                    
+
                 send_client.connect((peer[0], peer[1]))
                 #Maybe a print statement here for peer connection clarification
                 file_name = "./share_to_send/" + str(self.command[1]) + "_" + str(self.command[2]) + "*.txt"
@@ -94,8 +102,10 @@ class connect_to_peer:
 
     
 
-    def receive(self):
+    def merge_receive(self):
         while True:
+            if self.break_thread==True:
+                break
             try:
                 #Ability to accept connections.
                 client, address = self.merge_server.accept()

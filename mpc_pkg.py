@@ -196,11 +196,11 @@ class mpc_pkg:
             if self.client.mpc_cmd!=None:
                 mpc_command=self.client.mpc_cmd.split(None,3)
                 #command always have four part: CALC+SUM/AVG/MAX...+state type+data(maybe only client list or client list+beaver triple)
-                print("command:",mpc_command)
+                #print("command:",mpc_command)
                 self.client.mpc_cmd=None
                 mpc_command[3]=json.loads(mpc_command[3])
                 if mpc_command[1]=="SUM":
-                    compute_sum(self.stats[mpc_command[2]],len(mpc_command[3]))
-                    new_mpc=connect_to_peer(mpc_command,self.stats[mpc_command[2]],self.client.get_socket())
-                    prCyan("++++++++++++++++\nStart computing sum of "+mpc_command[2]+" data\n++++++++++++++++")
-                    prCyan("++++++++++++++++\nSum is 82.4\n++++++++++++++++")
+                    compute_sum(self.stats[mpc_command[2]],len(mpc_command[3]),self.stats[mpc_command[2]])
+                    new_mpc=connect_to_peer(mpc_command,self.client.get_socket())
+                    new_mpc.break_thread=True
+                    print("Start computing sum of "+mpc_command[2]+" data\n")
