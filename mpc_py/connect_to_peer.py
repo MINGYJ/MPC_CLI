@@ -16,6 +16,8 @@ Function Specifications:
 2. Receive: Allows acception of incoming connections, keeps track of current clients, and starts new communication threads.
 3. Handle: Receives client data, and writes data. 
 4. Send: Send file(s) and it's content to selected peer.
+5. Send Merge: Send merged files to all peers for final result.
+6. Receive Merge: Receive merged files from all peers for other class to read and compute final result
 """
 import socket
 import threading
@@ -41,8 +43,9 @@ class connect_to_peer:
         #Keeps track of the current client list.
         self.client_list=[]
 
+        #start sending and receving at same time to reduce runtime
+        threading.Thread(target=self.send).start()
         self.receive()
-        self.send()
 
     def receive(self):
         while True:
@@ -63,7 +66,7 @@ class connect_to_peer:
             calc, stats = self.command[1], self.command[2]
             file_name=str(calc)+"_"+str(stats)+"_"+len(self.client_list)+".txt"
             with open('../share_received/'+file_name,'w+') as f:
-                while True:
+                while (l):
                     l = client.recv(1024)
                     f.write(l.decode('ascii'))
             prCyan("Done receiving.")
@@ -95,6 +98,9 @@ class connect_to_peer:
             finally:
                 send_client.close()
         prCyan("Done Sending All Shares")
+
+    def send_merge(self):
+        return None
 
 
                 

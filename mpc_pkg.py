@@ -200,5 +200,5 @@ class mpc_pkg:
                 self.client.mpc_cmd=None
                 mpc_command[3]=json.loads(mpc_command[3])
                 if mpc_command[1]=="SUM":
-                    new_mpc=connect_to_peer(mpc_command,self.stats[mpc_command[2]],self.client.get_socket())
                     compute_sum(self.stats[mpc_command[2]],len(mpc_command[3]))
+                    new_mpc=connect_to_peer(mpc_command,self.stats[mpc_command[2]],self.client.get_socket())
