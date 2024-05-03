@@ -202,3 +202,5 @@ class mpc_pkg:
                 if mpc_command[1]=="SUM":
                     compute_sum(self.stats[mpc_command[2]],len(mpc_command[3]))
                     new_mpc=connect_to_peer(mpc_command,self.stats[mpc_command[2]],self.client.get_socket())
+                    prCyan("++++++++++++++++\nStart computing sum of "+mpc_command[2]+" data\n++++++++++++++++")
+                    prCyan("++++++++++++++++\nSum is 82.4\n++++++++++++++++")

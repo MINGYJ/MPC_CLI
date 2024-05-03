@@ -1,6 +1,6 @@
 import os
-from server_func import server_func
-from merge import merge
+from .server_func import server_func
+from .merge import merge
 
 def compute_sum(command,party_size,stats):
     #parameter eg. command='age',party_size=3,stats=20
