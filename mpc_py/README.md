@@ -54,19 +54,10 @@ Note: Can be used for individual party member calculations, but also reused for 
 
 ## share.py
 
-TODO
-
-server_func TODO:
-- sum(value[])
-- mult(A,y,B,a,c)
-
-share TODO:
-- share(value,party_size)
-
-- beaver_triple(party_size)
-
-merge TODO:
-- merge(value[])
+This module contains functions that are in charge of:
+1. Retrieving the input and it's data type.
+2. Outputting the share file into the share_to_send folder.
+3. Naming the file ("share_format.txt).
 
 # Additional Information
 
