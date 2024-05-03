@@ -32,7 +32,7 @@ class connect_to_peer:
         #start sending and receving at same time to reduce runtime
         #threading.Thread(target=self.send).start()
         #the main method will call send when needed
-        
+
         self.receive()
 
     def receive(self):
@@ -64,11 +64,15 @@ class connect_to_peer:
             client.close()
 
 
-    def send(self):
+    def send(self,merge=False):
         peer_lists = self.command[3]  # List of peers to send data to
         for peer in peer_lists:
             send_client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  
             try:
+                if merge:
+                    peer[1]=peer[1]+1
+                    #merge port is the share port plus 1, server port plus 2
+                    
                 send_client.connect((peer[0], peer[1]))
                 #Maybe a print statement here for peer connection clarification
                 file_name = "./share_to_send/" + str(self.command[1]) + "_" + str(self.command[2]) + "*.txt"
@@ -87,8 +91,7 @@ class connect_to_peer:
                 send_client.close()
         prCyan("Done Sending All Shares")
 
-    def send_merge(self):
-        return None
+
     
 
     def receive(self):
